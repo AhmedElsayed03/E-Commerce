@@ -21,6 +21,9 @@ namespace E_Commerce.Infrastructure.Data.EntityConfiguration
             builder.Property(p => p.Price)
                    .IsRequired();
 
+            builder.Property(p => p.Category)
+                   .IsRequired();
+
             builder.HasMany(p => p.Images)
                    .WithOne(p => p.Product)
                    .HasForeignKey(p => p.ProductId)
