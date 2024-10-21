@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E_Commerce.Application.Models.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace E_Commerce.Application.Abstractions.Services
 {
     public interface IImageService
     {
+        Task AddImages(List<ImageAddDto> addPostImage);
     }
 }
