@@ -30,5 +30,33 @@ namespace E_Commerce.Infrastructure.Services
             await _unitOfWork.CategoryRepo.AddAsync(category);
             await _unitOfWork.SaveChangesAsync();
         }
+
+        public async Task<CategoryWithProductsDto> GetCategoryWithProducts(Guid id)
+        {
+            // Fetch the category with products
+            var category = await _unitOfWork.CategoryRepo.GetCategoryWithProducts(id);
+
+            // Check if the category exists
+            if (category == null)
+            {
+                return null!; // or throw an exception if you prefer
+            }
+
+            // Map category to DTO
+            var categoryDto = new CategoryWithProductsDto
+            {
+                Name = category.Name,
+                Products = category.Products.Select(product => new ProductReadDto
+                {
+                    Name = product.Name,
+                    Price = product.Price,
+                    CategoryId = product.CategoryId,
+                    Category = category.Name,
+                    ImagesUrls = product.Images.Select(image => image.Url).ToList()
+                }).ToList()
+            };
+
+            return categoryDto;
+        }
     }
 }

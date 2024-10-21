@@ -1,5 +1,6 @@
 ﻿using E_Commerce.Application.Abstractions.Services;
 using E_Commerce.Application.Models.DTOs;
+using E_Commerce.Domain.Entities;
 using E_Commerce.Infrastructure.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -24,5 +25,12 @@ namespace E_Commerce.Api.Controllers
             return TypedResults.NoContent();
         }
 
-    }
+        [HttpGet]
+        [Route("{categoryId}")]
+        public async Task<CategoryWithProductsDto> GetCategoriesWithProducts(Guid categoryId)
+        {
+            return await _categoryService.GetCategoryWithProducts(categoryId);
+        }
+
+}
 }

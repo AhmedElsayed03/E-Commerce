@@ -10,5 +10,6 @@ namespace E_Commerce.Application.Abstractions.Services
     public interface ICategoryService
     {
         Task AddCategory(CategoryAddDto newCategory);
+        Task<CategoryWithProductsDto> GetCategoryWithProducts(Guid id);
     }
 }

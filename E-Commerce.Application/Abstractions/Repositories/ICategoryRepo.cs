@@ -10,5 +10,6 @@ namespace E_Commerce.Application.Abstractions.Repositories
     public interface ICategoryRepo : IGenericRepo<Category>
     {
         Task <string> GetCategoryNameById (Guid categoryId);
+        Task<Category?> GetCategoryWithProducts(Guid categoryId);
     }
 }

@@ -26,5 +26,16 @@ namespace E_Commerce.Infrastructure.Data.Repositories
 
             return category?.Name!;
         }
+
+
+        public async Task<Category?> GetCategoryWithProducts(Guid categoryId)
+        {
+            return await _dbContext.Set<Category>()
+                                   .Include(p => p.Products)
+                                   .ThenInclude(p=>p.Images)
+                                   .FirstOrDefaultAsync(p => p.Id == categoryId);
+        }
+
+
     }
 }
