@@ -1,6 +1,7 @@
 ﻿using E_Commerce.Application.Abstractions.Repositories;
 using E_Commerce.Domain.Entities;
 using E_Commerce.Infrastructure.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,19 +20,19 @@ namespace E_Commerce.Infrastructure.Data.Repositories
         }
 
 
-        public IEnumerable<Product> GetAll(int page, int countPerPage)
+        public async Task<IEnumerable<Product>> GetAll(int page, int countPerPage)
         {
-            var products = _dbContext.Products
+            var products = await _dbContext.Products
                            .OrderBy(i => i.Name)
                            .Skip((page - 1) * countPerPage)
                            .Take(countPerPage)
-                           .ToList();
+                           .ToListAsync();
             return products;
         }
 
-        public int GetCount()
+        public async Task<int> GetCount()
         {
-            var productsCount = _dbContext.Products.Count();
+            var productsCount = await _dbContext.Products.CountAsync();
             return productsCount;
         }
 

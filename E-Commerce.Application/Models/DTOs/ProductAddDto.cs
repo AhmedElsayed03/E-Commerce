@@ -4,18 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E_Commerce.Domain.Entities
+namespace E_Commerce.Application.Models.DTOs
 {
-    public class Product:Entity
+    public class ProductAddDto
     {
-        //Properties
+
         public string Name { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
         public double Price { get; set; }
-
-        //Nav Properties
-        public IEnumerable<Image> Images { get; set; } = new List<Image>();
-
+        public string Description { get; set; } = string.Empty;
     }
 }
