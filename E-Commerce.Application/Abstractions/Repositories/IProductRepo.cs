@@ -10,6 +10,7 @@ namespace E_Commerce.Application.Abstractions.Repositories
     public interface IProductRepo : IGenericRepo<Product>
     {
         Task<IEnumerable<Product>> GetAll(int page, int countPerPage);
+        Task<Product?> GetProductDetailsById(Guid id);
         Task<int> GetCount();
     }
 }

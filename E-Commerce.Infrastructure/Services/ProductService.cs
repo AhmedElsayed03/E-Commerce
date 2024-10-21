@@ -20,49 +20,61 @@ namespace E_Commerce.Infrastructure.Services
 
         public async Task<ProductPaginationDto> GetAll(int page, int countPerPage)
         {
+            // Fetch paginated products
             var products = await _unitOfWork.ProductRepo.GetAll(page, countPerPage);
+
+            // Get distinct category IDs
+            var categoryIds = products.Select(p => p.CategoryId).Distinct().ToList();
+
+            // Fetch category names in bulk
+            var categories = await Task.WhenAll(categoryIds.Select(id => _unitOfWork.CategoryRepo.GetCategoryNameById(id)));
+
+            // Create a lookup for category names
+            var categoryLookup = categoryIds.Zip(categories, (id, name) => new { id, name })
+                                             .ToDictionary(x => x.id, x => x.name);
+
+            // Map products to ProductReadDto
             var productsDto = products.Select(i => new ProductReadDto
             {
                 Name = i.Name,
                 Price = i.Price,
-                CategoryId = i.CategoryId
-  
-            });
+                CategoryId = i.CategoryId,
+                Category = categoryLookup.GetValueOrDefault(i.CategoryId)!, // Safely get the category name
+                ImagesUrls = i.Images.Select(image => image.Url).ToList()
+            }).ToList();
 
+            // Get the total count of products
             int totalCount = await _unitOfWork.ProductRepo.GetCount();
 
             return new ProductPaginationDto { Products = productsDto, TotalCount = totalCount };
         }
 
 
-        public async Task<IEnumerable<ProductReadDto>> GetAllProducts()
+
+
+        public async Task<ProductDetailsReadDto> GetProductDetails(Guid id)
         {
-            var products = await _unitOfWork.ProductRepo.GetAllAsync();
-            var productsDto = products.Select(i => new ProductReadDto
-            {
-                Name = i.Name,
-                Price = i.Price,
-                CategoryId = i.CategoryId
-            });
+            var product = await _unitOfWork.ProductRepo.GetProductDetailsById(id);
 
-            return productsDto;
-        }
+            // Fetch the category names in bulk (assuming this can be done for a single category)
+            var categoryIds = new List<Guid> { product!.CategoryId };
+            var categories = await Task.WhenAll(categoryIds.Select(categoryId => _unitOfWork.CategoryRepo.GetCategoryNameById(categoryId)));
 
-
-        public async Task<ProductDetailsReadDto> GetProductDetails(int Id)
-        {
-            var product = await _unitOfWork.ProductRepo.GetByIdAsync(Id);
+            // Create a lookup for the category name
+            var categoryLookup = categoryIds.Zip(categories, (id, name) => new { id, name })
+                                             .ToDictionary(x => x.id, x => x.name);
 
             return new ProductDetailsReadDto
             {
-
                 Name = product!.Name,
                 Description = product.Description,
                 Price = product.Price,
-                CategoryId = product.CategoryId
-
+                CategoryId = product.CategoryId,
+                Category = categoryLookup[product.CategoryId], // Lookup the category name
+                ImagesUrls = product.Images.Select(image => image.Url).ToList() // Get image URLs
             };
         }
+
 
 
         public async Task AddProduct(ProductAddDto newProduct)

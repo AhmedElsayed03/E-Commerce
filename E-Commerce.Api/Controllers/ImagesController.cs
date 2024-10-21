@@ -53,6 +53,7 @@ namespace E_Commerce.Api.Controllers
                 }
                 #endregion
 
+
                 #region Storing Image
                 var generatedPictureName = $"{Guid.NewGuid()}{extension}";
                 var savedPicturesPath = Environment.CurrentDirectory + "/Images/" + generatedPictureName;

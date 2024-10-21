@@ -9,7 +9,7 @@ namespace E_Commerce.Application.Abstractions.Repositories
     public interface IGenericRepo<T> where T : class
     {
         Task<IReadOnlyList<T>> GetAllAsync();
-        Task<T?> GetByIdAsync(int id);
+        Task<T?> GetByIdAsync(Guid id);
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);

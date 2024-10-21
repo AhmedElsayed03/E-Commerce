@@ -22,6 +22,12 @@ namespace E_Commerce.Api.Controllers
             return await _productService.GetAll(page, countPerPage);
         }
 
+        [HttpGet]
+        [Route("{productId}")]
+        public async Task<ProductDetailsReadDto> GetProductDetailsById(Guid productId)
+        {
+            return await _productService.GetProductDetails(productId);
+        }
 
 
         [HttpPost]

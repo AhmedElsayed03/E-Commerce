@@ -26,8 +26,16 @@ namespace E_Commerce.Infrastructure.Data.Repositories
                            .OrderBy(i => i.Name)
                            .Skip((page - 1) * countPerPage)
                            .Take(countPerPage)
+                           .Include(i => i.Images)
                            .ToListAsync();
             return products;
+        }
+
+        public async Task<Product?> GetProductDetailsById(Guid id)
+        {
+            return await _dbContext.Set<Product>()
+                                   .Include(p => p.Images)
+                                   .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<int> GetCount()
