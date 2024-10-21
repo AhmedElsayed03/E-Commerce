@@ -1,6 +1,7 @@
 ﻿using E_Commerce.Application.Abstractions.Services;
 using E_Commerce.Application.Models.DTOs;
 using E_Commerce.Infrastructure.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce.Api.Controllers
@@ -17,10 +18,10 @@ namespace E_Commerce.Api.Controllers
 
         [HttpPost]
         [Route("Add-Category")]
-        public ActionResult AddCategory(CategoryAddDto newCategory)
+        public async Task<NoContent> AddCategory(CategoryAddDto newCategory)
         {
-            _categoryService.AddCategory(newCategory);
-            return Ok("Category Added!");
+            await _categoryService.AddCategory(newCategory);
+            return TypedResults.NoContent();
         }
 
     }

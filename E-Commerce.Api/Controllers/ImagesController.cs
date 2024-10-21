@@ -1,6 +1,7 @@
 ﻿using E_Commerce.Application.Abstractions.Services;
 using E_Commerce.Application.Models.DTOs;
 using E_Commerce.Infrastructure.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce.Api.Controllers
@@ -16,8 +17,8 @@ namespace E_Commerce.Api.Controllers
         }
 
         [HttpPost]
-        [Route("PostPictures")]
-        public ActionResult<List<ImageAddDto>> PostPictures([FromForm] List<IFormFile> ImageFile, Guid productId)
+        [Route("UploadImage")]
+        public async Task<IResult> PostPictures([FromForm] List<IFormFile> ImageFile, Guid productId)
         {
 
             var listOfImgs = new List<ImageAddDto>();
@@ -38,7 +39,7 @@ namespace E_Commerce.Api.Controllers
                     StringComparer.InvariantCultureIgnoreCase);
                 if (!isExtensionAllowed)
                 {
-                    return BadRequest("Format not allowed");
+                    return TypedResults.BadRequest("Format Not Allowed!");
                 }
                 #endregion
 
@@ -48,13 +49,13 @@ namespace E_Commerce.Api.Controllers
 
                 if (!isSizeAllowed)
                 {
-                    return BadRequest("Size is Larger than allowed size");
+                    return TypedResults.BadRequest("Length is Larger than 5MB");
                 }
                 #endregion
 
                 #region Storing Image
                 var generatedPictureName = $"{Guid.NewGuid()}{extension}";
-                var savedPicturesPath = Environment.CurrentDirectory + "/Images/Posts/" + generatedPictureName;
+                var savedPicturesPath = Environment.CurrentDirectory + "/Images/" + generatedPictureName;
                 using var stream = new FileStream(savedPicturesPath, FileMode.Create);
                 img.CopyTo(stream);
                 #endregion
@@ -72,8 +73,8 @@ namespace E_Commerce.Api.Controllers
 
                 listOfImgs.Add(newImg);
             }
-            _imageService.AddImages(listOfImgs);
-            return Ok(listOfImgs);
+            await _imageService.AddImages(listOfImgs);
+            return TypedResults.NoContent();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using E_Commerce.Application.Abstractions.Services;
 using E_Commerce.Application.Models.DTOs;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce.Api.Controllers
@@ -25,10 +26,10 @@ namespace E_Commerce.Api.Controllers
 
         [HttpPost]
         [Route("Add-Product")]
-        public ActionResult AddProduct(ProductAddDto newProduct)
+        public async Task<NoContent> AddProduct(ProductAddDto newProduct)
         {
-            _productService.AddProduct(newProduct);
-            return Ok("Product Added!");
+            await _productService.AddProduct(newProduct);
+            return TypedResults.NoContent();
         }
     }
 }
