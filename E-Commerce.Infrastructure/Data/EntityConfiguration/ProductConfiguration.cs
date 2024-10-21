@@ -21,13 +21,42 @@ namespace E_Commerce.Infrastructure.Data.EntityConfiguration
             builder.Property(p => p.Price)
                    .IsRequired();
 
-            builder.Property(p => p.Category)
-                   .IsRequired();
-
             builder.HasMany(p => p.Images)
                    .WithOne(p => p.Product)
                    .HasForeignKey(p => p.ProductId)
                    .OnDelete(DeleteBehavior.Cascade);
+
+
+            builder.HasData(
+            new Product
+            {
+                Id = Guid.Parse("a8a72ef4-1b45-4b59-bc0d-3a0cb7a0f74f"),
+                Name = "Product 1",
+                Description = "Description for Product 1",
+                Price = 19.99
+            },
+            new Product
+            {
+                Id = Guid.Parse("c2c89d35-72a7-4cc8-bb77-7f7454d1d2de"),
+                Name = "Product 2",
+                Description = "Description for Product 2",
+                Price = 29.99
+            },
+            new Product
+            {
+                Id = Guid.Parse("e4b56b1a-6372-4e5b-9f61-03ee2b5e6b64"),
+                Name = "Product 3",
+                Description = "Description for Product 3",
+                Price = 39.99
+            },
+            new Product
+            {
+                Id = Guid.Parse("e4b56b1a-6372-4e5b-9f61-03ee2b5e5a64"),
+                Name = "Product 4",
+                Description = "Description for Product 4",
+                Price = 39.99
+            }
+          );
         }
     }
 }

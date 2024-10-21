@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace E_Commerce.Application.Models.DTOs
 {
-    public class ProductDetailsReadDto
+    public class CategoryAddDto
     {
         public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public double Price { get; set; }
-        public Guid CategoryId { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using E_Commerce.Application.Abstractions.Repositories;
+using E_Commerce.Application.Abstractions.Services;
 using E_Commerce.Application.Abstractions.UnitOfWork;
 using E_Commerce.Infrastructure.Data.Context;
 using E_Commerce.Infrastructure.Data.Repositories;
 using E_Commerce.Infrastructure.Data.UnitOfWork;
+using E_Commerce.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,13 +31,14 @@ namespace E_Commerce.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IImageRepo, ImageRepo>();
             services.AddScoped<IProductRepo, ProductRepo>();
+            services.AddScoped<ICategoryRepo, CategoryRepo>();
             #endregion
 
 
             #region Services
-            //Services to be added
-            //services.AddScoped<IProductService, ProductService>();
-            //services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             #endregion
 
             return services;

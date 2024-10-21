@@ -12,6 +12,7 @@ namespace E_Commerce.Infrastructure.Data.Context
     {
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Image> Images => Set<Image>();
+        public DbSet<Category> Categories => Set<Category>();
         public ECommerceDbContext(DbContextOptions options) : base(options)
         {
 

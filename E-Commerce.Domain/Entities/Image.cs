@@ -15,7 +15,7 @@ namespace E_Commerce.Domain.Entities
         public string Url { get; set; } = string.Empty;
 
         //Foreign Key
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
 
         //Nav Properties
         public Product? Product { get; set; }

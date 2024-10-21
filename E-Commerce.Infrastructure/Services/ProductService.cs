@@ -25,15 +25,14 @@ namespace E_Commerce.Infrastructure.Services
             {
                 Name = i.Name,
                 Price = i.Price,
-                Category = i.Category
-
+                CategoryId = i.CategoryId
+  
             });
 
             int totalCount = await _unitOfWork.ProductRepo.GetCount();
 
             return new ProductPaginationDto { Products = productsDto, TotalCount = totalCount };
         }
-
 
 
         public async Task<IEnumerable<ProductReadDto>> GetAllProducts()
@@ -43,12 +42,12 @@ namespace E_Commerce.Infrastructure.Services
             {
                 Name = i.Name,
                 Price = i.Price,
-                Category = i.Category
-
+                CategoryId = i.CategoryId
             });
 
             return productsDto;
         }
+
 
         public async Task<ProductDetailsReadDto> GetProductDetails(int Id)
         {
@@ -60,7 +59,7 @@ namespace E_Commerce.Infrastructure.Services
                 Name = product!.Name,
                 Description = product.Description,
                 Price = product.Price,
-                Category = product.Category
+                CategoryId = product.CategoryId
 
             };
         }
@@ -73,8 +72,10 @@ namespace E_Commerce.Infrastructure.Services
                 Id = Guid.NewGuid(),
                 Name = newProduct.Name,
                 Price = newProduct.Price,
-                Category = newProduct.Category,
-                Description = newProduct.Description
+                Description = newProduct.Description,
+                CategoryId = newProduct.CategoryId,
+                CreateTime =  DateTime.Now
+                
             };
 
             await _unitOfWork.ProductRepo.AddAsync(product);

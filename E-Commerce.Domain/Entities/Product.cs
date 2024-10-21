@@ -10,12 +10,15 @@ namespace E_Commerce.Domain.Entities
     {
         //Properties
         public string Name { get; set; } = string.Empty;
-        public string Category { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public double Price { get; set; }
 
+        //Foreign Key
+        public Guid CategoryId { get; set; }
+
         //Nav Properties
         public IEnumerable<Image> Images { get; set; } = new List<Image>();
+        public Category? Category { get; set; }
 
     }
 }
