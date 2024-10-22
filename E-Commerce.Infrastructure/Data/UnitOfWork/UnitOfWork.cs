@@ -16,17 +16,23 @@ namespace E_Commerce.Infrastructure.Data.UnitOfWork
         public IProductRepo ProductRepo { get; }
         public IImageRepo ImageRepo { get; }
         public ICategoryRepo CategoryRepo { get; }
+        public ICartRepo CartRepo { get; }
+        public ICartItemRepo CartItemRepo { get; }
         private readonly ECommerceDbContext _context;
 
         public UnitOfWork(ECommerceDbContext context,
                           IProductRepo productRepo,
                           IImageRepo imageRepo,
-                          ICategoryRepo categoryRepo)
+                          ICategoryRepo categoryRepo,
+                          ICartRepo cartRepo,
+                          ICartItemRepo cartItemRepo)
         {
                           _context = context;
                           ProductRepo = productRepo;
                           ImageRepo = imageRepo;
                           CategoryRepo = categoryRepo;
+                          CartRepo = cartRepo;
+                          CartItemRepo = cartItemRepo;
         }
         public async Task<int> SaveChangesAsync()
         {

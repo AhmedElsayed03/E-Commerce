@@ -13,6 +13,8 @@ namespace E_Commerce.Infrastructure.Data.Context
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Image> Images => Set<Image>();
         public DbSet<Category> Categories => Set<Category>();
+        public DbSet<Cart> Carts => Set<Cart>();
+        public DbSet<CartItem> CartItems => Set<CartItem>();
         public ECommerceDbContext(DbContextOptions options) : base(options)
         {
 
@@ -20,6 +22,13 @@ namespace E_Commerce.Infrastructure.Data.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            #region CartItem
+
+            builder.Entity<CartItem>()
+                   .HasKey(i => new { i.CartId, i.ProductId });
+
+            #endregion
 
         }
 

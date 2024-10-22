@@ -32,6 +32,8 @@ namespace E_Commerce.Infrastructure
             services.AddScoped<IImageRepo, ImageRepo>();
             services.AddScoped<IProductRepo, ProductRepo>();
             services.AddScoped<ICategoryRepo, CategoryRepo>();
+            services.AddScoped<ICartRepo, CartRepo>();
+            services.AddScoped<ICartItemRepo, CartItemRepo>();
             #endregion
 
 
@@ -39,6 +41,8 @@ namespace E_Commerce.Infrastructure
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<ICartItemService, CartItemService>();
             #endregion
 
             return services;

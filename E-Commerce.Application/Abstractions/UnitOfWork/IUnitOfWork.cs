@@ -12,6 +12,8 @@ namespace E_Commerce.Application.Abstractions.UnitOfWork
         public IProductRepo ProductRepo { get; }
         public IImageRepo ImageRepo { get; }
         public ICategoryRepo CategoryRepo { get; }
+        public ICartRepo CartRepo { get; }
+        public ICartItemRepo CartItemRepo { get; }
         Task<int> SaveChangesAsync();
     }
 }
