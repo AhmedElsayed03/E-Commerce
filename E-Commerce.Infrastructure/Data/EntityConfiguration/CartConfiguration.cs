@@ -15,6 +15,19 @@ namespace E_Commerce.Infrastructure.Data.EntityConfiguration
         {
             builder.HasKey(i => i.Id);
 
+
+            var carts = new List<Cart> {
+
+            new Cart
+            {
+                Id = Guid.Parse("ea83a2e4-7efb-4078-87d0-1abd38e00198"),
+                CreateTime = DateTime.Now,
+                IsActive = false,
+                TotalPrice = 0,
+            }
+            };
+            builder.HasData(carts);
         }
+
     }
 }

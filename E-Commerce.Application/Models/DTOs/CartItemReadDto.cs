@@ -8,9 +8,11 @@ namespace E_Commerce.Application.Models.DTOs
 {
     public class CartItemReadDto
     {
-        public Guid CartId { get; set; }
-        public Guid ProductId { get; set; }
+        //public Guid CartId { get; set; }
+        //public Guid ProductId { get; set; }
+        public ProductDetailsReadDto? productDetailsReadDto { get; set; }
         public int Quantity { get; set; }
         public double TotalPrice { get; set; }
+
     }
 }

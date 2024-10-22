@@ -23,6 +23,8 @@ namespace E_Commerce.Infrastructure.Data.Repositories
         {
             var cart = await _dbContext.Set<Cart>()
                                    .Include(p => p.CartItems)
+                                   .ThenInclude(p => p.Product)
+                                   .ThenInclude(p => p!.Images)
                                    .FirstOrDefaultAsync(p => p.Id == cartId);
 
             return cart;

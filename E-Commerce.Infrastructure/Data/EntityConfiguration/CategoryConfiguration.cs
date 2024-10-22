@@ -22,6 +22,23 @@ namespace E_Commerce.Infrastructure.Data.EntityConfiguration
                    .WithOne(p => p.Category)
                    .HasForeignKey(p => p.CategoryId)
                    .OnDelete(DeleteBehavior.SetNull);
+
+            var categories = new List<Category> {
+
+            new Category
+            {
+                Id = Guid.Parse("bdafc3c9-abe6-4ac5-bdb6-8361524ff999"),
+                Name = "Mobile Phones",
+                CreateTime = DateTime.Now
+            },
+            new Category
+            {
+                Id = Guid.Parse("f5a4eb59-26b3-4784-b427-65b5f7f57052"),
+                Name = "Laptops",
+                CreateTime = DateTime.Now
+            }
+            };
+            builder.HasData(categories);
         }
     }
 }

@@ -33,8 +33,15 @@ namespace E_Commerce.Infrastructure.Services
             {
                 CartItems = cart.CartItems.Select(item => new CartItemReadDto
                 {
-                    CartId = item.CartId,
-                    ProductId = item.ProductId,
+                    productDetailsReadDto = new ProductDetailsReadDto
+                    {
+                        Name = item.Product!.Name,
+                        Description = item.Product.Description,
+                        Price = item.Product.Price,
+                        ImagesUrls = item.Product.Images.Select(img => img.Url).ToList()
+                    },
+                    //CartId = item.CartId,
+                    //ProductId = item.ProductId,
                     Quantity = item.Quantity,
                     TotalPrice = item.TotalPrice
                 }).ToList(),
@@ -44,6 +51,7 @@ namespace E_Commerce.Infrastructure.Services
             {
                 cartReadDto.IsActive = true;
             }
+            
                 
 
             // Step 3: Return the DTO
