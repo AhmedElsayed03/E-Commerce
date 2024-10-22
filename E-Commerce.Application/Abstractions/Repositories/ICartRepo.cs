@@ -9,5 +9,6 @@ namespace E_Commerce.Application.Abstractions.Repositories
 {
     public interface ICartRepo : IGenericRepo<Cart>
     {
+        Task<Cart?> GetCartWithItems(Guid cartId);
     }
 }

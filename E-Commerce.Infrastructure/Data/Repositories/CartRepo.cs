@@ -1,6 +1,7 @@
 ﻿using E_Commerce.Application.Abstractions.Repositories;
 using E_Commerce.Domain.Entities;
 using E_Commerce.Infrastructure.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,13 @@ namespace E_Commerce.Infrastructure.Data.Repositories
             _dbContext = context;
         }
 
+        public async Task<Cart?> GetCartWithItems(Guid cartId)
+        {
+            var cart = await _dbContext.Set<Cart>()
+                                   .Include(p => p.CartItems)
+                                   .FirstOrDefaultAsync(p => p.Id == cartId);
 
+            return cart;
+        }
     }
 }
