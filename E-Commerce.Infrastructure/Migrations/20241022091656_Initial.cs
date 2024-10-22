@@ -12,6 +12,20 @@ namespace E_Commerce.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Carts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TotalPrice = table.Column<double>(type: "float", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -47,6 +61,34 @@ namespace E_Commerce.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CartItems",
+                columns: table => new
+                {
+                    CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    TotalPrice = table.Column<double>(type: "float", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItems", x => new { x.CartId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_CartItems_Carts_CartId",
+                        column: x => x.CartId,
+                        principalTable: "Carts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CartItems_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Images",
                 columns: table => new
                 {
@@ -69,6 +111,11 @@ namespace E_Commerce.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CartItems_ProductId",
+                table: "CartItems",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Images_ProductId",
                 table: "Images",
                 column: "ProductId");
@@ -83,7 +130,13 @@ namespace E_Commerce.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "CartItems");
+
+            migrationBuilder.DropTable(
                 name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "Carts");
 
             migrationBuilder.DropTable(
                 name: "Products");

@@ -22,6 +22,53 @@ namespace E_Commerce.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("E_Commerce.Domain.Entities.Cart", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<double?>("TotalPrice")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("E_Commerce.Domain.Entities.CartItem", b =>
+                {
+                    b.Property<Guid>("CartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
+
+                    b.HasKey("CartId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CartItems");
+                });
+
             modelBuilder.Entity("E_Commerce.Domain.Entities.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -100,6 +147,25 @@ namespace E_Commerce.Infrastructure.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("E_Commerce.Domain.Entities.CartItem", b =>
+                {
+                    b.HasOne("E_Commerce.Domain.Entities.Cart", "Cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("E_Commerce.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("E_Commerce.Domain.Entities.Image", b =>
                 {
                     b.HasOne("E_Commerce.Domain.Entities.Product", "Product")
@@ -120,6 +186,11 @@ namespace E_Commerce.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("E_Commerce.Domain.Entities.Cart", b =>
+                {
+                    b.Navigation("CartItems");
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.Category", b =>

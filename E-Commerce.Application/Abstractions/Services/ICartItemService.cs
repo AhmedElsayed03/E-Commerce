@@ -8,5 +8,8 @@ namespace E_Commerce.Application.Abstractions.Services
 {
     public interface ICartItemService
     {
+        Task AddItemToCart(Guid ProductId, Guid CartId);
+        Task PlusCount(Guid ProductId, Guid CartId);
+        Task MinusCount(Guid ProductId, Guid CartId);
     }
 }

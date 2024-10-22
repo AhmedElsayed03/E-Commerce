@@ -17,5 +17,10 @@ namespace E_Commerce.Infrastructure.Data.Repositories
         {
             _dbContext = context;
         }
+
+        public async Task<CartItem?> FindAsync(Func<CartItem, bool> predicate)
+        {
+            return await Task.Run(() => _dbContext.CartItems.FirstOrDefault(predicate));
+        }
     }
 }
