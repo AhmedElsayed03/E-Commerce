@@ -20,34 +20,33 @@ namespace E_Commerce.Infrastructure.Services
 
         public async Task<ProductPaginationDto> GetAll(int page, int countPerPage)
         {
-            // Fetch paginated products
             var products = await _unitOfWork.ProductRepo.GetAll(page, countPerPage);
-
-            // Get distinct category IDs
             var categoryIds = products.Select(p => p.CategoryId).Distinct().ToList();
 
-            // Fetch category names in bulk
-            var categories = await Task.WhenAll(categoryIds.Select(id => _unitOfWork.CategoryRepo.GetCategoryNameById(id)));
+            // Fetch category names sequentially to avoid concurrency issues
+            var categories = new Dictionary<Guid, string>();
+            foreach (var categoryId in categoryIds)
+            {
+                if (!categories.ContainsKey(categoryId))
+                {
+                    categories[categoryId] = await _unitOfWork.CategoryRepo.GetCategoryNameById(categoryId);
+                }
+            }
 
-            // Create a lookup for category names
-            var categoryLookup = categoryIds.Zip(categories, (id, name) => new { id, name })
-                                             .ToDictionary(x => x.id, x => x.name);
-
-            // Map products to ProductReadDto
             var productsDto = products.Select(i => new ProductReadDto
             {
                 Name = i.Name,
                 Price = i.Price,
                 CategoryId = i.CategoryId,
-                Category = categoryLookup.GetValueOrDefault(i.CategoryId)!, // Safely get the category name
+                Category = categories.GetValueOrDefault(i.CategoryId)!,
                 ImagesUrls = i.Images.Select(image => image.Url).ToList()
             }).ToList();
 
-            // Get the total count of products
             int totalCount = await _unitOfWork.ProductRepo.GetCount();
 
             return new ProductPaginationDto { Products = productsDto, TotalCount = totalCount };
         }
+
 
 
 
