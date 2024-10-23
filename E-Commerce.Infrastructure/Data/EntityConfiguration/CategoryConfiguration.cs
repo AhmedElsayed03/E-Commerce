@@ -21,7 +21,7 @@ namespace E_Commerce.Infrastructure.Data.EntityConfiguration
             builder.HasMany(p => p.Products)
                    .WithOne(p => p.Category)
                    .HasForeignKey(p => p.CategoryId)
-                   .OnDelete(DeleteBehavior.SetNull);
+                   .OnDelete(DeleteBehavior.NoAction);
 
             var categories = new List<Category> {
 

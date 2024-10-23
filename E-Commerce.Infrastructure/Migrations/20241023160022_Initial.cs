@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace E_Commerce.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -56,8 +58,7 @@ namespace E_Commerce.Infrastructure.Migrations
                         name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -108,6 +109,31 @@ namespace E_Commerce.Infrastructure.Migrations
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Carts",
+                columns: new[] { "Id", "CreateTime", "IsActive", "TotalPrice" },
+                values: new object[] { new Guid("ea83a2e4-7efb-4078-87d0-1abd38e00198"), new DateTime(2024, 10, 23, 19, 0, 21, 836, DateTimeKind.Local).AddTicks(2055), false, 0.0 });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "CreateTime", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("bdafc3c9-abe6-4ac5-bdb6-8361524ff999"), new DateTime(2024, 10, 23, 19, 0, 21, 836, DateTimeKind.Local).AddTicks(5222), "Mobile Phones" },
+                    { new Guid("f5a4eb59-26b3-4784-b427-65b5f7f57052"), new DateTime(2024, 10, 23, 19, 0, 21, 836, DateTimeKind.Local).AddTicks(5243), "Laptops" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "CategoryId", "CreateTime", "Description", "Name", "Price" },
+                values: new object[,]
+                {
+                    { new Guid("0d7957d2-2ca7-43eb-b9e0-6e300da1a6b4"), new Guid("f5a4eb59-26b3-4784-b427-65b5f7f57052"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "M3 Max / 1TB / 16-core CPU 40-core GPU 48GB Unified Memory", "MacBook Air 13-inch", 1350.99 },
+                    { new Guid("2cc1ca42-7f05-48e9-b223-886c5c98a4af"), new Guid("bdafc3c9-abe6-4ac5-bdb6-8361524ff999"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Titanum - 1TB", "IPhone 15 Pro", 59.990000000000002 },
+                    { new Guid("c8faaae7-fee5-450c-ac98-0baaa046077d"), new Guid("bdafc3c9-abe6-4ac5-bdb6-8361524ff999"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Moonlight - 128GB", "IPhone 13", 29.989999999999998 },
+                    { new Guid("e4b56b1a-6372-4e5b-9f61-03ee2b5e6b64"), new Guid("f5a4eb59-26b3-4784-b427-65b5f7f57052"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "256GB SSD Storage / 8-Core CPU 8-Core GPU 8GB Unified Memory", "MacBook Pro 16-inch", 1500.99 }
                 });
 
             migrationBuilder.CreateIndex(

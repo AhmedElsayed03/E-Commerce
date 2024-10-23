@@ -40,6 +40,15 @@ namespace E_Commerce.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Carts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ea83a2e4-7efb-4078-87d0-1abd38e00198"),
+                            CreateTime = new DateTime(2024, 10, 23, 19, 0, 21, 836, DateTimeKind.Local).AddTicks(2055),
+                            IsActive = false,
+                            TotalPrice = 0.0
+                        });
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.CartItem", b =>
@@ -85,6 +94,20 @@ namespace E_Commerce.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("bdafc3c9-abe6-4ac5-bdb6-8361524ff999"),
+                            CreateTime = new DateTime(2024, 10, 23, 19, 0, 21, 836, DateTimeKind.Local).AddTicks(5222),
+                            Name = "Mobile Phones"
+                        },
+                        new
+                        {
+                            Id = new Guid("f5a4eb59-26b3-4784-b427-65b5f7f57052"),
+                            CreateTime = new DateTime(2024, 10, 23, 19, 0, 21, 836, DateTimeKind.Local).AddTicks(5243),
+                            Name = "Laptops"
+                        });
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.Image", b =>
@@ -145,6 +168,44 @@ namespace E_Commerce.Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("2cc1ca42-7f05-48e9-b223-886c5c98a4af"),
+                            CategoryId = new Guid("bdafc3c9-abe6-4ac5-bdb6-8361524ff999"),
+                            CreateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Titanum - 1TB",
+                            Name = "IPhone 15 Pro",
+                            Price = 59.990000000000002
+                        },
+                        new
+                        {
+                            Id = new Guid("c8faaae7-fee5-450c-ac98-0baaa046077d"),
+                            CategoryId = new Guid("bdafc3c9-abe6-4ac5-bdb6-8361524ff999"),
+                            CreateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Moonlight - 128GB",
+                            Name = "IPhone 13",
+                            Price = 29.989999999999998
+                        },
+                        new
+                        {
+                            Id = new Guid("e4b56b1a-6372-4e5b-9f61-03ee2b5e6b64"),
+                            CategoryId = new Guid("f5a4eb59-26b3-4784-b427-65b5f7f57052"),
+                            CreateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "256GB SSD Storage / 8-Core CPU 8-Core GPU 8GB Unified Memory",
+                            Name = "MacBook Pro 16-inch",
+                            Price = 1500.99
+                        },
+                        new
+                        {
+                            Id = new Guid("0d7957d2-2ca7-43eb-b9e0-6e300da1a6b4"),
+                            CategoryId = new Guid("f5a4eb59-26b3-4784-b427-65b5f7f57052"),
+                            CreateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "M3 Max / 1TB / 16-core CPU 40-core GPU 48GB Unified Memory",
+                            Name = "MacBook Air 13-inch",
+                            Price = 1350.99
+                        });
                 });
 
             modelBuilder.Entity("E_Commerce.Domain.Entities.CartItem", b =>
@@ -182,7 +243,7 @@ namespace E_Commerce.Infrastructure.Migrations
                     b.HasOne("E_Commerce.Domain.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Category");
