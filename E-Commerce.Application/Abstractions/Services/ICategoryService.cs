@@ -11,5 +11,6 @@ namespace E_Commerce.Application.Abstractions.Services
     {
         Task AddCategory(CategoryAddDto newCategory);
         Task<CategoryWithProductsDto> GetCategoryWithProducts(Guid id);
+        Task<List<CategoryReadDto>> GetAllCategories();
     }
 }

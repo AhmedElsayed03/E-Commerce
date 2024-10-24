@@ -32,5 +32,11 @@ namespace E_Commerce.Api.Controllers
             return await _categoryService.GetCategoryWithProducts(categoryId);
         }
 
-}
+        [HttpGet]
+        public async Task<List<CategoryReadDto>> GetAllCategories()
+        {
+            return await _categoryService.GetAllCategories();
+        }
+
+    }
 }

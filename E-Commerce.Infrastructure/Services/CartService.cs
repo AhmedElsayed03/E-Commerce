@@ -38,7 +38,9 @@ namespace E_Commerce.Infrastructure.Services
                         Name = item.Product!.Name,
                         Description = item.Product.Description,
                         Price = item.Product.Price,
-                        ImagesUrls = item.Product.Images.Select(img => img.Url).ToList()
+                        ImagesUrls = item.Product.Images.Select(img => img.Url).ToList(),
+                        ProductId = item.ProductId,
+                        
                     },
                     //CartId = item.CartId,
                     //ProductId = item.ProductId,

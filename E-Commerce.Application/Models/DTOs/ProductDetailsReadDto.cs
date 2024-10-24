@@ -9,6 +9,7 @@ namespace E_Commerce.Application.Models.DTOs
     public class ProductDetailsReadDto
     {
         public string Name { get; set; } = string.Empty;
+        public Guid ProductId { get; set; }
         public string Description { get; set; } = string.Empty;
         public double Price { get; set; }
         public Guid CategoryId { get; set; }

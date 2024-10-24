@@ -39,7 +39,9 @@ namespace E_Commerce.Infrastructure.Services
                 Price = i.Price,
                 CategoryId = i.CategoryId,
                 Category = categories.GetValueOrDefault(i.CategoryId)!,
-                ImagesUrls = i.Images.Select(image => image.Url).ToList()
+                ImagesUrls = i.Images.Select(image => image.Url).ToList(),
+                ProductId = i.Id
+                
             }).ToList();
 
             int totalCount = await _unitOfWork.ProductRepo.GetCount();

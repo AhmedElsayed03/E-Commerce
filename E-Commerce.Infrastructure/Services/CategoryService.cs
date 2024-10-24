@@ -58,5 +58,26 @@ namespace E_Commerce.Infrastructure.Services
 
             return categoryDto;
         }
+
+        public async Task<List<CategoryReadDto>> GetAllCategories()
+        {
+            // Fetch the category with products
+            var categories = await _unitOfWork.CategoryRepo.GetAllAsync();
+
+            // Check if the category exists
+            if (categories == null)
+            {
+                return null!; // or throw an exception if you prefer
+            }
+
+            // Map category to DTO
+            var categoryDtos = categories.Select(c => new CategoryReadDto
+            {
+                Id = c.Id,
+                Name = c.Name
+            }).ToList();
+
+            return categoryDtos;
+        }
     }
 }
