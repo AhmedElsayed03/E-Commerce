@@ -49,9 +49,9 @@ namespace E_Commerce.Infrastructure.Services
             {
                 // Update the cart's total price
                 cart.TotalPrice = (cart.TotalPrice ?? 0) + item.TotalPrice; // Increment the total price by the new item price
-                if (cart.IsActive==false)
+                if (cart.IsActive == false)
                 {
-                    cart.IsActive= true;
+                    cart.IsActive = true;
                 }
 
                 // Update the Cart in the repository
@@ -140,7 +140,7 @@ namespace E_Commerce.Infrastructure.Services
                     await _unitOfWork.CartRepo.UpdateAsync(cart);
                 }
 
-                if (cart!.TotalPrice==0)
+                if (cart!.TotalPrice == 0)
                 {
                     cart.IsActive = false;
                 }
@@ -152,6 +152,10 @@ namespace E_Commerce.Infrastructure.Services
             }
         }
 
+        public async Task DeleteItem(Guid ProductId, Guid CartId)
+        {
 
+            await _unitOfWork.CartItemRepo.DeleteCartItemAsync(CartId, ProductId);
+        }
     }
 }

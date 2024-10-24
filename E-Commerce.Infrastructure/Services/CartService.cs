@@ -40,10 +40,7 @@ namespace E_Commerce.Infrastructure.Services
                         Price = item.Product.Price,
                         ImagesUrls = item.Product.Images.Select(img => img.Url).ToList(),
                         ProductId = item.ProductId,
-                        
                     },
-                    //CartId = item.CartId,
-                    //ProductId = item.ProductId,
                     Quantity = item.Quantity,
                     TotalPrice = item.TotalPrice
                 }).ToList(),

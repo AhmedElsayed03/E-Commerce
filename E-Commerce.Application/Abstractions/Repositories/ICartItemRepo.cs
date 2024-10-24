@@ -10,5 +10,6 @@ namespace E_Commerce.Application.Abstractions.Repositories
     public interface ICartItemRepo : IGenericRepo<CartItem>
     {
         Task<CartItem?> FindAsync(Func<CartItem, bool> predicate);
+        Task DeleteCartItemAsync(Guid cartId, Guid productId);
     }
 }

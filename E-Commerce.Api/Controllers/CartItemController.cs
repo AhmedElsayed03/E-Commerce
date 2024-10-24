@@ -39,5 +39,13 @@ namespace E_Commerce.Api.Controllers
             await _cartItemService.MinusCount(productId, cartId);
             return TypedResults.NoContent();
         }
+
+        [HttpDelete]
+        [Route("Delete")]
+        public async Task<NoContent> DeleteItem(Guid productId, Guid cartId)
+        {
+            await _cartItemService.DeleteItem(productId, cartId);
+            return TypedResults.NoContent();
+        }
     }
 }
