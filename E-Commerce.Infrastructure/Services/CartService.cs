@@ -19,16 +19,15 @@ namespace E_Commerce.Infrastructure.Services
 
         public async Task<CartReadDto> GetCartWithElements(Guid cartId)
         {
-            // Step 1: Get the cart with items using the existing method
+            // Fetch the cart with its items
             var cart = await _unitOfWork.CartRepo.GetCartWithItems(cartId);
 
-            // Step 2: Map the Cart to CartReadDto
             if (cart == null)
             {
-                // Handle the case where the cart doesn't exist, e.g., return null or throw an exception
                 throw new InvalidOperationException("Cart not found.");
             }
 
+  
             var cartReadDto = new CartReadDto
             {
                 CartItems = cart.CartItems.Select(item => new CartItemReadDto
@@ -44,18 +43,19 @@ namespace E_Commerce.Infrastructure.Services
                     Quantity = item.Quantity,
                     TotalPrice = item.TotalPrice
                 }).ToList(),
-                TotalPrice = cart.CartItems.Sum(item => item.TotalPrice), // Optionally calculate total price here
-            };
-            if (cartReadDto.TotalPrice != 0) 
+                TotalPrice = cart.CartItems.Sum(item => item.TotalPrice),
+                ItemsNumber = cart.CartItems.Sum(item => item.Quantity)
+        };
+
+            // Set IsActive based on the TotalPrice
+            if (cartReadDto.TotalPrice != 0)
             {
                 cartReadDto.IsActive = true;
             }
-            
-                
 
-            // Step 3: Return the DTO
             return cartReadDto;
         }
+
 
     }
 }

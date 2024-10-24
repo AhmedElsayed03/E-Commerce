@@ -12,5 +12,6 @@ namespace E_Commerce.Application.Models.DTOs
         public IEnumerable<CartItemReadDto> CartItems { get; set; } = new List<CartItemReadDto>();
         public double? TotalPrice { get; set; }
         public bool IsActive { get; set; } = false;
+        public int ItemsNumber { get; set; }
     }
 }
