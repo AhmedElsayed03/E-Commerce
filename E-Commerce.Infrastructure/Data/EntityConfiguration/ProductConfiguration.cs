@@ -37,6 +37,14 @@ namespace E_Commerce.Infrastructure.Data.EntityConfiguration
             },
             new Product
             {
+                Id = Guid.Parse("a4c61a6b-42ab-47b9-baf4-8b5ca7f8a5e4"),
+                Name = "IPhone X",
+                Description = "White - 64GB",
+                Price = 15.99,
+                CategoryId = Guid.Parse("bdafc3c9-abe6-4ac5-bdb6-8361524ff999")
+            },
+            new Product
+            {
                 Id = Guid.Parse("c8faaae7-fee5-450c-ac98-0baaa046077d"),
                 Name = "IPhone 13",
                 Description = "Moonlight - 128GB",
