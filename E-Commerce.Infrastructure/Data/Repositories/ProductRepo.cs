@@ -44,6 +44,31 @@ namespace E_Commerce.Infrastructure.Data.Repositories
             return productsCount;
         }
 
+        public async Task<List<Product>> GetCategoryWithAllProducts(int page, int countPerPage, Guid? categoryId)
+        {
+            if (categoryId.HasValue)
+            {
+
+                return await _dbContext.Set<Product>()
+                                       .Where(p => p.CategoryId == categoryId.Value)  // Filter by categoryId
+                                       .OrderBy(i => i.Name)
+                                       .Skip((page - 1) * countPerPage)
+                                       .Take(countPerPage)
+                                       .Include(p => p.Images)
+                                       .ToListAsync();  // Return the list of products
+            }
+
+            else
+            {
+                return await _dbContext.Set<Product>()
+                                       .OrderBy(i => i.Name)
+                                       .Skip((page - 1) * countPerPage)
+                                       .Take(countPerPage)
+                                       .Include(p => p.Images)
+                                       .ToListAsync();  // Return all products if no categoryId is provided
+            }
+        }
+
 
     }
 }

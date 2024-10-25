@@ -11,6 +11,7 @@ namespace E_Commerce.Application.Abstractions.Repositories
     {
         Task<IEnumerable<Product>> GetAll(int page, int countPerPage);
         Task<Product?> GetProductDetailsById(Guid id);
+        Task<List<Product>> GetCategoryWithAllProducts(int page, int countPerPage, Guid? categoryId);
         Task<int> GetCount();
     }
 }

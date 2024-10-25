@@ -2,6 +2,8 @@
 using E_Commerce.Application.Abstractions.UnitOfWork;
 using E_Commerce.Application.Models.DTOs;
 using E_Commerce.Domain.Entities;
+using E_Commerce.Infrastructure.Data.Context;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,17 +15,31 @@ namespace E_Commerce.Infrastructure.Services
     public class ProductService:IProductService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductService(IUnitOfWork unitOfWork)
+        private readonly IConfiguration _configuration;
+        public ProductService(IUnitOfWork unitOfWork, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
+            _configuration = configuration;
         }
 
-        public async Task<ProductPaginationDto> GetAll(int page, int countPerPage)
+        public async Task<ProductPaginationDto> GetAll(int page, Guid? catId)
         {
-            var products = await _unitOfWork.ProductRepo.GetAll(page, countPerPage);
+            var paginateValue = _configuration["paginate"];
+            var countPerPage = string.IsNullOrEmpty(paginateValue) ? 3 : int.Parse(paginateValue);
+
+            // Fetch products based on whether catId is provided or not
+
+
+            var products = await _unitOfWork.ProductRepo.GetCategoryWithAllProducts(page, countPerPage, catId);
+
+            foreach (var x in products)
+            {
+                Console.WriteLine(x.Id);
+            }
+
             var categoryIds = products.Select(p => p.CategoryId).Distinct().ToList();
 
-            // Fetch category names sequentially to avoid concurrency issues
+            // Fetch category names
             var categories = new Dictionary<Guid, string>();
             foreach (var categoryId in categoryIds)
             {
@@ -33,6 +49,7 @@ namespace E_Commerce.Infrastructure.Services
                 }
             }
 
+            // Convert products to DTOs
             var productsDto = products.Select(i => new ProductReadDto
             {
                 Name = i.Name,
@@ -41,22 +58,37 @@ namespace E_Commerce.Infrastructure.Services
                 Category = categories.GetValueOrDefault(i.CategoryId)!,
                 ImagesUrls = i.Images.Select(image => image.Url).ToList(),
                 ProductId = i.Id
-                
             }).ToList();
 
+
+            // Calculate total count and pages
             int totalCount = await _unitOfWork.ProductRepo.GetCount();
 
-            return new ProductPaginationDto { Products = productsDto, TotalCount = totalCount };
+            if (catId != null)
+            {
+                var x = await _unitOfWork.CategoryRepo.GetCategoryWithProducts(catId!.Value);
+                totalCount = x != null ? x.Products.Count() : 0;
+            }
+            
+
+
+            int totalPages = (int)Math.Ceiling((double)totalCount / countPerPage);
+
+            return new ProductPaginationDto { Products = productsDto, TotalPages = totalPages };
         }
 
 
 
 
 
-        public async Task<ProductDetailsReadDto> GetProductDetails(Guid id)
+        public async Task<ProductDetailsReadDto?> GetProductDetails(Guid id)
         {
             var product = await _unitOfWork.ProductRepo.GetProductDetailsById(id);
 
+            if (product == null)
+            {
+                return null;
+            }
             // Fetch the category names in bulk (assuming this can be done for a single category)
             var categoryIds = new List<Guid> { product!.CategoryId };
             var categories = await Task.WhenAll(categoryIds.Select(categoryId => _unitOfWork.CategoryRepo.GetCategoryNameById(categoryId)));
@@ -71,8 +103,10 @@ namespace E_Commerce.Infrastructure.Services
                 Description = product.Description,
                 Price = product.Price,
                 CategoryId = product.CategoryId,
+                ProductId = product.Id,
+                //IsAdded = product.IsAdded,
                 Category = categoryLookup[product.CategoryId], // Lookup the category name
-                ImagesUrls = product.Images.Select(image => image.Url).ToList() // Get image URLs
+                ImagesUrls = product.Images.Select(image => image.Url).ToList() // Get image URLs,
             };
         }
 
@@ -87,7 +121,8 @@ namespace E_Commerce.Infrastructure.Services
                 Price = newProduct.Price,
                 Description = newProduct.Description,
                 CategoryId = newProduct.CategoryId,
-                CreateTime =  DateTime.Now
+                CreateTime =  DateTime.Now,
+                //IsAdded = true,
                 
             };
 

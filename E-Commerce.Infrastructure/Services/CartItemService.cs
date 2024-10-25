@@ -125,6 +125,8 @@ namespace E_Commerce.Infrastructure.Services
                 }
                 else if (cartItem.Quantity == 1)
                 {
+                    //var product = await _unitOfWork.ProductRepo.GetByIdAsync(ProductId);
+                    //product!.IsAdded = false;
                     // If quantity is 1, remove the CartItem from the cart
                     await _unitOfWork.CartItemRepo.DeleteAsync(cartItem);
                 }
@@ -154,7 +156,8 @@ namespace E_Commerce.Infrastructure.Services
 
         public async Task DeleteItem(Guid ProductId, Guid CartId)
         {
-
+            //var product = await _unitOfWork.ProductRepo.GetByIdAsync(ProductId);
+            //product!.IsAdded = false;
             await _unitOfWork.CartItemRepo.DeleteCartItemAsync(CartId, ProductId);
         }
     }

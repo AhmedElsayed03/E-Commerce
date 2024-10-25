@@ -12,6 +12,7 @@ namespace E_Commerce.Domain.Entities
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public double Price { get; set; }
+        //public bool IsAdded { get; set; } = false;
 
         //Foreign Key
         public Guid CategoryId { get; set; }

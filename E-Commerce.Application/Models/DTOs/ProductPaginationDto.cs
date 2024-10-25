@@ -9,6 +9,6 @@ namespace E_Commerce.Application.Models.DTOs
     public class ProductPaginationDto
     {
         public IEnumerable<ProductReadDto> Products { get; set; } = new List<ProductReadDto>();
-        public int TotalCount { get; set; }
+        public int TotalPages { get; set; }
     }
 }

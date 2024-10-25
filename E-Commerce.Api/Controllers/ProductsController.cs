@@ -16,17 +16,23 @@ namespace E_Commerce.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{page}/{countPerPage}")]
-        public async Task<ProductPaginationDto> GetAll(int page, int countPerPage)
+        [Route("all/{page}")]
+        public async Task<ProductPaginationDto> GetAll(int page ,[FromQuery] Guid? catId = null)
         {
-            return await _productService.GetAll(page, countPerPage);
+            return await _productService.GetAll(page , catId);
         }
 
-        [HttpGet]
-        [Route("{productId}")]
-        public async Task<ProductDetailsReadDto> GetProductDetailsById(Guid productId)
+        [HttpGet("{productId}")]
+        public async Task<ActionResult<ProductDetailsReadDto>> GetProductDetailsById(Guid productId)
         {
-            return await _productService.GetProductDetails(productId);
+            var product = await _productService.GetProductDetails(productId);
+
+            if (product == null)
+            {
+                return NotFound(); // Returns a 404 response
+            }
+            await Task.Delay(200);
+            return Ok(product); // Returns a 200 response with the product data
         }
 
 

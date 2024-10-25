@@ -9,8 +9,8 @@ namespace E_Commerce.Application.Abstractions.Services
 {
     public interface IProductService
     {
-        Task<ProductPaginationDto> GetAll(int page, int countPerPage);
+        Task<ProductPaginationDto> GetAll(int page , Guid? catId);
         Task AddProduct(ProductAddDto newProduct);
-        Task<ProductDetailsReadDto> GetProductDetails(Guid Id);
+        Task<ProductDetailsReadDto?> GetProductDetails(Guid Id);
     }
 }
